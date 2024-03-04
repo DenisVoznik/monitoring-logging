@@ -1,0 +1,11 @@
+groups:
+  - name: cpu
+    rules:
+    - alert: High CPU usage
+      expr: (sum(rate(container_cpu_usage_seconds_total[1m])) BY (instance, name) * 100) > 87
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "High CPU usage on Nginx container {{ $labels.ds_id }}"
+        description: "The CPU usage on the Nginx container {{ $labels.ds_id }} has been above 87% for more than 1 minutes.\n Current value: {{ $value }}"
